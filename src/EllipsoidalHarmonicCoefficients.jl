@@ -1,7 +1,6 @@
-using MPIFiles, Polynomials, PolynomialMatrices, LinearAlgebra, MPISphericalHarmonics, Unitful, MPIMagneticFields
+using MPIFiles, Polynomials, MPISphericalHarmonics, Unitful, MPIMagneticFields
 
-include("LameFunctions.jl")
-include("CoordinateTransformations.jl")
+include("Utils_EH.jl")
 
 #############################################################################################################
 # Coefficients
@@ -38,18 +37,6 @@ EllipsoidalMagneticFieldCoefficients(
                 radius,
                 hcat([center for p = 1:size(coeffs, 2)]...),
                 ffp)
-
-function getGammaNormalization(m,n,Lame,ellipsoidalTDesign)
-    x = map((x->getEllipsoidalCoords(x,a)),ellipsoidalTDesign)
-    return 4*pi/length(x) * sum([getSmn(x[i],m,n,Lame)^2 for i in eachindex(x)])
-end
-
-function getWeightsA(m,n,Lame,ellipsoidalTDesign,F,a)
-    x = map((x->getEllipsoidalCoords(x,a)),ellipsoidalTDesign)
-    Integral = real(4*pi/length(x) * sum([F[i]*getSmn(x[i],m,n,Lame) for i in eachindex(x)]))
-    Normalization = real(1/(getGammaNormalization(m,n,Lame,ellipsoidalTDesign)*Lame[m,n+1](a[1])))
-    return Integral*Normalization
-end
 
 # get ellipsoidal harmonic coefficients for a given field, reference ellipsoid (half-axis) and degree L
 

@@ -2,7 +2,8 @@ using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
 
-using LinearAlgebra, Interpolations, DataFrames, CSV, Unitful, Plots
+using Interpolations, DataFrames, CSV, Unitful, Plots
+import LinearAlgebra: norm
 
 include("src/EllipsoidalHarmonicCoefficients.jl")
 
